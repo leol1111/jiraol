@@ -15,12 +15,16 @@ const app = new Hono()
     .post("/login",
         zValidator("json", loginScheme),
         async (c) => {
-            console.log("log in ne");
+        try {
             const { email, password } = c.req.valid("json");
+
+            
+
             const { account } = await createAdminClient();
             const session = await account.createEmailPasswordSession(
                 email, password
-            )
+            );
+
             setCookie(c, AUTH_COOKIE, session.secret, {
                 path: "/",
                 httpOnly: true,
@@ -28,7 +32,13 @@ const app = new Hono()
                 sameSite: "strict",
                 maxAge: 60 * 60 * 24 * 30,
             });
+
             return c.json({ email, password });
+           
+        } catch (error) {
+            console.error("Error during login:", error);
+            return c.json({ error: "Login failed" }, 500);
+        }
     })
     .post("/register", 
         zValidator("json", registerScheme),

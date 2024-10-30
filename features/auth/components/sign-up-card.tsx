@@ -29,7 +29,7 @@ import { useRegister } from "../api/user-register";
 
 export default function SignUpCard() {
 
-    const { mutate } = useRegister();
+    const { mutate, isPending } = useRegister();
 
     const form = useForm<z.infer<typeof registerScheme>>({
         resolver: zodResolver(registerScheme),
@@ -63,6 +63,7 @@ export default function SignUpCard() {
                                     <FormItem>
                                         <FormControl>
                                             <Input 
+                                                disabled={isPending}
                                                 type="text"
                                                 {...field}
                                                 placeholder="Enter your name"
@@ -81,6 +82,7 @@ export default function SignUpCard() {
                                 <FormItem>
                                     <FormControl>
                                         <Input 
+                                            disabled={isPending}
                                             type="email"
                                             {...field}
                                             placeholder="Enter email address"
@@ -99,6 +101,7 @@ export default function SignUpCard() {
                                 <FormItem>
                                     <FormControl>
                                         <Input 
+                                            disabled={isPending}
                                             type="password"
                                             {...field}
                                             placeholder="Enter your password"
@@ -112,7 +115,7 @@ export default function SignUpCard() {
                             
                         </FormField>
                         
-                        <Button disabled={false} size="lg" className="w-full">Sign Up</Button>
+                        <Button disabled={isPending} size="lg" className="w-full">Sign Up</Button>
                     </form>
                 </Form>
             </CardContent>

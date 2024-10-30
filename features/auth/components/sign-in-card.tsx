@@ -29,7 +29,7 @@ import { useLogin } from "../api/user-login";
 
 export default function SignInCard() {
 
-    const { mutate } = useLogin();
+    const { mutate, isPending } = useLogin();
 
     const form = useForm<z.infer<typeof loginScheme>>({
         resolver: zodResolver(loginScheme),
@@ -39,7 +39,6 @@ export default function SignInCard() {
         }
     });
     const onSubmit = (values: z.infer<typeof loginScheme>) => {
-        console.log('mutate...')
         mutate({
             json: values,
         });
@@ -64,6 +63,7 @@ export default function SignInCard() {
                                 <FormItem>
                                     <FormControl>
                                         <Input 
+                                            disabled={isPending}
                                             type="email"
                                             {...field}
                                             placeholder="Enter email address"
@@ -82,6 +82,7 @@ export default function SignInCard() {
                                 <FormItem>
                                     <FormControl>
                                         <Input 
+                                            disabled={isPending}
                                             type="password"
                                             {...field}
                                             placeholder="Enter your password"
@@ -97,7 +98,7 @@ export default function SignInCard() {
                         
                         
                             
-                            <Button disabled={false} size="lg" className="w-full">Sign In</Button>
+                            <Button disabled={isPending} size="lg" className="w-full">Sign In</Button>
                                 
                           
                         
